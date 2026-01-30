@@ -40,16 +40,16 @@ Using Python and the Pandas library, I generate the following metrics for each a
 ### Mathematical Indicators
 
 * **Daily Returns**: The fundamental building block of performance analysis.
-    $$\text{Daily Return} (R_t) = \frac{P_t - P_{t-1}}{P_{t-1}}$$
+$$\text{Daily Return} (R_t) = \frac{P_t - P_{t-1}}{P_{t-1}}$$
 
 * **Moving Average (MA)**: Used to smooth out price "noise" and highlight trends.
-    $$\text{MA} = \frac{1}{n} \sum_{i=1}^{n} P_{i}$$
+$$\text{MA} = \frac{1}{n} \sum_{i=1}^{n} P_{i}$$
 
 * **Volatility**: Measures the risk by calculating the standard deviation of returns.
-    $$\sigma = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (R_i - \bar{R})^2}$$
+$$\sigma = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (R_i - \bar{R})^2}$$
 
 * **Drawdown**: Quantifies the percentage decline from the historical peak.
-    $$\text{Drawdown} = \frac{\text{Price} - \text{Peak}}{\text{Peak}}$$
+$$\text{Drawdown} = \frac{\text{Price} - \text{Peak}}{\text{Peak}}$$
 
 ### Transformed Data Sample
 Here is a sample of the data after processing (Example: Apple):
