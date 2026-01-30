@@ -37,10 +37,19 @@ In this section, I process the raw data to extract technical indicators. These m
 ### Calculated Indicators
 Using Python and the Pandas library, I generate the following metrics for each asset:
 
-* **Daily Returns:** The percentage change in price from the previous day.
-* **Moving Average (MA):** A rolling average (e.g., 20 days) used to smooth price fluctuations and identify trends.
-* **Volatility:** The standard deviation of daily returns, representing the asset's risk.
-* **Drawdown:** The percentage decline from the last peak, showing the potential loss during market drops.
+### Mathematical Indicators
+
+* **Daily Returns**: The fundamental building block of performance analysis.
+    $$\text{Daily Return} (R_t) = \frac{P_t - P_{t-1}}{P_{t-1}}$$
+
+* **Moving Average (MA)**: Used to smooth out price "noise" and highlight trends.
+    $$\text{MA} = \frac{1}{n} \sum_{i=1}^{n} P_{i}$$
+
+* **Volatility**: Measures the risk by calculating the standard deviation of returns.
+    $$\sigma = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (R_i - \bar{R})^2}$$
+
+* **Drawdown**: Quantifies the percentage decline from the historical peak.
+    $$\text{Drawdown} = \frac{\text{Price} - \text{Peak}}{\text{Peak}}$$
 
 ### Transformed Data Sample
 Here is a sample of the data after processing (Example: Apple):
