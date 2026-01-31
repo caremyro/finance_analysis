@@ -1,2 +1,5 @@
 scripts/__pycache__/
+db/__pycache__/
+
 .venv/
+.env
