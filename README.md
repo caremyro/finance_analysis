@@ -65,3 +65,60 @@ Here is a sample of the data after processing (Example: Apple):
 | 2021-03-03 | -2.45% | 126.96 | 0.306 | -11.02% |
 
 > **Note:** The initial rows for Moving Average and Volatility contain empty values (NaN) because they require a historical window of data (e.g., 20 days) to be calculated.
+
+## Load: Database Architecture & Storage
+
+Once the data is extracted and the financial indicators are calculated, the final stage of the pipeline persists this information into a **relational database (MySQL)**. This architecture ensures data persistence, integrity, and allows for complex analytical queries that would be inefficient on flat files.
+
+### Relational Database Schema
+The database is organized into three distinct tables to optimize storage and maintain clear logical relationships between assets and their metrics:
+
+
+
+* **Tickers Table**: The core reference table storing descriptive metadata for each asset (Company name, Sector, Currency, and Exchange). This avoids repeating static information in every row of price data.
+* **Stocks Table**: Dedicated to raw historical market data (Open, High, Low, Close, Volume). It uses a composite primary key `(date, ticker_id)` to prevent time-series overlaps.
+* **Indicators Table**: A specialized storage for "Financial Intelligence". By separating indicators (Yields, Volatility, Drawdowns) from raw prices, we can update our calculation models without altering the original market history.
+
+### Data Integrity & Loading Logic
+The loading process is designed to be robust and reusable, incorporating several industrial-grade safety features:
+
+* **Automated Schema Management**: The pipeline automatically detects if the database and tables exist. If not, it generates the entire infrastructure (DDL) upon the first run.
+* **Conflict Prevention**: Using `INSERT IGNORE` logic, the system gracefully handles existing data, allowing for interrupted runs to be resumed without creating duplicate records or crashing.
+* **Data Sanitization**: Financial calculations often produce "NaN" (Not a Number) values (e.g., during the first few days of a Moving Average window). Our loader automatically converts these into `NULL` values to maintain database standards.
+* **Relational Constraints**: The use of **Foreign Keys** with `ON DELETE CASCADE` ensures that if an asset is removed from the system, all its related history and indicators are cleaned up automatically, preventing "orphan" data.
+
+### Database Schema Visualization
+
+Below is the entity-relationship diagram representing how the financial data is structured:
+
+```mermaid
+erDiagram
+    TICKERS ||--o{ STOCKS : "(1:N)"
+    TICKERS ||--o{ INDICATORS : "(1:N)"
+
+    TICKERS {
+        string ticker_id PK
+        string name
+        string sector
+        string currency
+        string stock_exchange
+    }
+
+    STOCKS {
+        datetime date PK
+        string ticker_id PK, FK
+        double open
+        double high
+        double low
+        double close
+        bigint volume
+    }
+
+    INDICATORS {
+        datetime date PK
+        string ticker_id PK, FK
+        double daily_yield
+        double moving_average
+        double volatility
+        double drawdown
+    }
