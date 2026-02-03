@@ -1,0 +1,7 @@
+mysql-connector-python
+pandas
+yfinance
+numpy
+python-dotenv
+ipykernel
+jupyterlab
