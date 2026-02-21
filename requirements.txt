@@ -5,3 +5,10 @@ numpy
 python-dotenv
 ipykernel
 jupyterlab
+mysql-connector-python
+pandas
+yfinance
+numpy
+python-dotenv
+ipykernel
+jupyterlab
